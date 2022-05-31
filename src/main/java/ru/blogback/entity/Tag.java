@@ -12,6 +12,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@Builder
 @Entity
 @Table(name = "tags")
 public class Tag implements Serializable {

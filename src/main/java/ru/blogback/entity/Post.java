@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
+@Builder
 @Entity
 @Table(name = "posts")
 public class Post implements Serializable {
