@@ -12,3 +12,9 @@ databaseChangeLog:
       changes:
         - sqlFile:
             path: "db/changelog/changes/trigger-log.sql"
+  - changeSet:
+      id: 3
+      author: Kenyo
+      changes:
+        - sqlFile:
+            path: "db/changelog/changes/authority-add.sql"

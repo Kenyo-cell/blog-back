@@ -14,3 +14,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+jwt:
+  public:
+    key: classpath:/rsa.pub.pem
+  private:
+    key: classpath:/rsa.pem
