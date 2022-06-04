@@ -28,6 +28,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -39,7 +41,7 @@ import java.security.interfaces.RSAPublicKey;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -70,9 +72,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @Order(1)
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/")
-                .csrf().disable()
+        http.csrf().disable()
                 .formLogin().disable()
+                .exceptionHandling(handler -> {
+                    handler.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+                            .accessDeniedHandler(new BearerTokenAccessDeniedHandler());
+                })
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
