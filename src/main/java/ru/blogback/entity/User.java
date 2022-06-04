@@ -1,6 +1,10 @@
 package ru.blogback.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,10 +28,12 @@ public class User implements Serializable {
 
     @ToString.Include
     @Column(name = "pass_hash")
+    @JsonIgnore
     private String passwordHash;
 
     @ToString.Include
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @ToString.Include
@@ -39,6 +45,11 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "likedUsers", cascade = CascadeType.ALL)
     private List<Post> likedPosts = new java.util.ArrayList<>();
+
+    @JsonProperty("password")
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
     @Override
     public boolean equals(Object o) {

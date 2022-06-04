@@ -1,6 +1,8 @@
 package ru.blogback.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,11 +34,13 @@ public class Post implements Serializable {
     private String content;
 
     @ToString.Include
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @ToString.Include
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToOne(cascade = CascadeType.ALL, targetEntity = User.class)
